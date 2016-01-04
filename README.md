@@ -43,6 +43,9 @@ Note that in this scanario the scheduler job interval is 10 minutes.
 ## References
 
 [Scheduling Azure Automation with Azure Scheduler](https://azure.microsoft.com/en-us/blog/scheduling-azure-automation-runbooks-with-azure-scheduler-2/)
+
 [Azure Automation Authentication](https://azure.microsoft.com/en-gb/blog/azure-automation-authenticating-to-azure-using-azure-active-directory/)
+
 [Azure Automation ARM Powerhsell Modules](http://blog.coretech.dk/jgs/azure-automation-script-for-downloading-and-preparing-azurerm-modules-for-azure-automation/)
+
 [Azure Data Lake Analytics Powershell](https://azure.microsoft.com/en-us/documentation/articles/data-lake-analytics-get-started-powershell/)
