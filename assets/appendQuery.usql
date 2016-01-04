@@ -1,0 +1,14 @@
+DECLARE @OUTPUT_RAW string = "/data/raw.tsv";
+DECLARE @INPUT_FOLDER string = "/rawtemp/{*}.tsv";
+
+//1. Define raw data
+@RAWTEMP =
+    EXTRACT timestamp DateTime,
+            page int,
+            xmlMsg string
+    FROM @INPUT_FOLDER
+    USING Extractors.Tsv();
+
+OUTPUT @RAWTEMP
+TO @OUTPUT_RAW
+USING Outputters.Tsv();

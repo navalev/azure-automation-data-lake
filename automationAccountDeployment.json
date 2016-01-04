@@ -1,0 +1,161 @@
+{
+  "$schema": "http://schemas.microsoft.org/azure/deploymentTemplate?api-version=2015-01-01-preview#",
+  "contentVersion": "1.0",
+  "parameters": {
+    "accountName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the Azure Automation account to deploy to."
+      }
+    },
+    "regionId": {
+      "type": "string",
+      "allowedValues": [
+        "Japan East",
+        "East US 2",
+        "West Europe",
+        "Southeast Asia",
+        "South Central US"
+      ],
+      "metadata": {
+        "description": "The region to deploy the Automation account in."
+      }
+    },
+    "userName": {
+      "type": "string",
+      "metadata": {
+        "description": "The username for the Azure Automation credential."
+      }
+    },
+    "password": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The password for the Azure Automation credential."
+      }
+    },
+    "scriptUri": {
+      "type": "string"
+    },
+    "moduleUri": {
+      "type": "string"
+    },
+    "dataLakeAccountName": {
+      "type": "string"
+    },
+    "dataLakeResourceGroup": {
+      "type": "string"
+    },
+    "uSQLScript": {
+      "type" :  "string"
+    }
+  },
+    "variables": {
+        "runbookName": "Submit-DataLakeAnalyticsJob",        
+        "runbookDescription": "Submit DataLake Analytics job",
+        "sku": "Basic",
+		"credentialName" : "DefaultAzureCredentials",		
+		"apiVersion" : "2015-01-01-preview",
+		"automationAccountId" : "[concat('Microsoft.Automation/automationAccounts/', parameters('accountName'))]"
+    },
+    "resources": [
+        {
+            "name": "[parameters('accountName')]",
+            "type": "Microsoft.Automation/automationAccounts",
+            "apiVersion": "[variables('apiVersion')]",
+            "location": "[parameters('regionId')]",
+            "dependsOn": [],
+            "tags": {},
+            "properties": {
+                "sku": {
+                    "name": "[variables('sku')]"
+                }
+            },
+            "resources": [
+                {
+                    "name": "[variables('runbookName')]",
+                    "type": "runbooks",
+                    "apiVersion": "[variables('apiVersion')]",
+                    "location": "[parameters('regionId')]",
+                    "dependsOn": [
+                        "[variables('automationAccountId')]"
+                    ],
+                    "tags": {},
+                    "properties": {
+                        "runbookType": "Script",
+                        "logProgress": "false",
+                        "logVerbose": "false",
+                        "description": "[variables('runbookDescription')]",
+                        "publishContentLink": {
+                            "uri": "[parameters('scriptUri')]",
+                            "version": "1.0.0.0"
+                        }
+                    }
+                },
+                {
+                    "name": "[variables('credentialName')]",
+                    "type": "credentials",
+                    "apiVersion": "[variables('apiVersion')]",
+                    "location": "[parameters('regionId')]",
+                    "dependsOn": [
+                        "[variables('automationAccountId')]"
+                    ],
+                    "tags": {},
+                    "properties": {
+                        "userName": "[parameters('userName')]",
+                        "password": "[parameters('password')]"
+                    }
+                },
+				{
+                    "apiVersion": "[variables('apiVersion')]",
+                    "type": "modules",
+                    "name": "AzureRM.DataLakeAnalytics",
+                    "location": "[parameters('regionId')]",
+                    "dependsOn": [
+                        "[variables('automationAccountId')]"
+                    ],
+                    "properties": {
+                        "contentLink": {
+                            "uri": "[parameters('moduleUri')]"
+                        }
+                    }
+                },
+				{
+                    "apiVersion": "[variables('apiVersion')]",
+                    "type": "variables",
+                    "location": "[parameters('regionId')]",
+                    "name": "dataLakeAccountName",
+                    "dependsOn": [
+                        "[variables('automationAccountId')]"
+                    ],
+                    "properties": {
+                        "Value": "[concat('\"', parameters('dataLakeAccountName'), '\"')]"
+                    }
+                },
+				{
+                    "apiVersion": "[variables('apiVersion')]",
+                    "type": "variables",
+                    "location": "[parameters('regionId')]",
+                    "name": "dataLakeResourceGroup",
+                    "dependsOn": [
+                        "[variables('automationAccountId')]"
+                    ],
+                    "properties": {
+                        "Value": "[concat('\"', parameters('dataLakeResourceGroup'), '\"')]"
+                    }
+                },
+				{
+                    "apiVersion": "[variables('apiVersion')]",
+                    "type": "variables",
+                    "location": "[parameters('regionId')]",
+                    "name": "uSQLScript",
+                    "dependsOn": [
+                        "[variables('automationAccountId')]"
+                    ],
+                    "properties": {
+                        "Value": "[concat('\"', parameters('uSQLScript'), '\"')]"
+                    }
+                }
+            ]
+        }
+    ]
+}
