@@ -3,7 +3,7 @@
 Using Azure Automation, Azure Scheduler and Data Lake Analytics Job to execute a U-SQL query against a Data Lake Store.
 
 ## Scenario
-An interative task need to be executed against data stored in a Data Lake Store. The task in this example is an append on files stored in the data lake store. 
+An iterative task need to be executed against data stored in a Data Lake Store. The task in this example is an append on files stored in the data lake store. 
 A Data Lake Anaytics Job is submitted using Azure Automation. Azure Scheduler is used, since the minimal interval for the built in scheduler for Azure Automation is 1 hour. This will allow better granularity with 10 minute intervals.
 In this scanario I assume that you have already setup a Data Lake Store.
 
