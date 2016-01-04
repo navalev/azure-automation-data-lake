@@ -11,6 +11,7 @@ In this scanario I assume that you have already setup a Data Lake Store.
 
 ## Deployment Setup Flow
 The deployment flow is implemented in [automateDataLakeJob.ps1](automateDataLakeJob.ps1) powershell script, and consists of 4 parts:
+
 1. Create a storage account and upload all the neccecary assets to it:
 	 - [appendQuery.usql](assets/appendQuery.usql): u-sql to be executed in the data Lake Analytics job
 	 - [AzureRM.DataLakeAnalytics.zip](assets/AzureRM.DataLakeAnalytics.zip): powershell module for Data Lake Analytics. This will be uploaded during the setup since Azure Automation does not come pre-loaded with this module
@@ -27,7 +28,8 @@ The deployment flow is implemented in [automateDataLakeJob.ps1](automateDataLake
 Azure Automation requires an Azure Active Directoy organizational user to authenticate. There are some limitations - the user can not have multi factor authentiation enabled, and as of now service principle authentication (for Azure Resource Manager) is not supported. I would recommnd to create a user specificly for the Automation jobs. This user info (username and passowrd) will be stored in Credentials assets in the Automation Account. For more information, read [this](https://azure.microsoft.com/en-gb/blog/azure-automation-authenticating-to-azure-using-azure-active-directory/) tutorial.
 
 ## Executing the Script
-Forks this repository, and edit [automationAccountDeployment.json](automationAccountDeployment.json) with your information:
+Forks this repository, and edit [automateDataLakeJob.ps1](automateDataLakeJob.ps1) with your information:
+
 1. If you have more han one subcription in your account, set the right id <subscription id>
 2. Set the automation ADD user name <automation ADD user name>
 3. Set the automation AAD password <sutomation ADD password>
@@ -41,9 +43,6 @@ Note that in this scanario the scheduler job interval is 10 minutes.
 ## References
 
 [Scheduling Azure Automation with Azure Scheduler](https://azure.microsoft.com/en-us/blog/scheduling-azure-automation-runbooks-with-azure-scheduler-2/)
-
 [Azure Automation Authentication](https://azure.microsoft.com/en-gb/blog/azure-automation-authenticating-to-azure-using-azure-active-directory/)
-
 [Azure Automation ARM Powerhsell Modules](http://blog.coretech.dk/jgs/azure-automation-script-for-downloading-and-preparing-azurerm-modules-for-azure-automation/)
-
 [Azure Data Lake Analytics Powershell](https://azure.microsoft.com/en-us/documentation/articles/data-lake-analytics-get-started-powershell/)
